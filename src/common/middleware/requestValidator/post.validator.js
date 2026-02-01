@@ -25,11 +25,13 @@ const postValidator = {
         if (filters) {
             try {
                 let {imgInfo, userId} = JSON.parse(filters);
-                reqParams.imgInfo = imgInfo;
-                reqParams.userId = parseInt(userId);
-                if (isNaN(reqParams.userId)) {
-                    throw new ExceptionBadRequest("userId must be a valid integer");
-                };
+                if (imgInfo) reqParams.imgInfo = imgInfo;
+                if (userId) {
+                    reqParams.userId = parseInt(userId);
+                    if (isNaN(reqParams.userId)) {
+                        throw new ExceptionBadRequest("userId must be a valid integer");
+                    };
+                }
             } catch (err) {
                 throw new ExceptionBadRequest("Filters must be a valid JSON string");
             };

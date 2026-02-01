@@ -2,6 +2,13 @@
 
 This is a Node.js backend application for an Instagram-like social media platform. It provides APIs for user authentication, posting, commenting, liking, and bookmarking features.
 
+### Links:
+1. Link github: https://github.com/ledinhphuong94/capstone_express_node53.git
+2. Link youtube: https://youtu.be/hNlf8xbIM7M
+3. Database: https://github.com/ledinhphuong94/capstone_express_node53/blob/master/database.gz
+4. File Json PostMan: https://github.com/ledinhphuong94/capstone_express_node53/blob/master/Capstone_Insta.postman_collection.json
+5. File Read me with details endpoints: https://github.com/ledinhphuong94/capstone_express_node53/blob/master/README.md
+
 ## Features
 
 - User authentication (register, login)
