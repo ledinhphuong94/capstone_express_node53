@@ -1,0 +1,112 @@
+generator client {
+  provider     = "prisma-client-js"
+  output       = "../src/models/generated/prisma"
+  moduleFormat = "cjs"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model bookmarks {
+  bookmarkId Int       @id @default(autoincrement())
+  userId     Int
+  imgId      Int
+  deletedBy  Int       @default(0)
+  deletedAt  DateTime? @db.Timestamp(0)
+  isDeleted  Boolean   @default(false)
+  createdAt  DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt  DateTime  @default(now()) @db.Timestamp(0)
+  users      users     @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "bookmarks_ibfk_1")
+  images     images    @relation(fields: [imgId], references: [imgId], onDelete: NoAction, onUpdate: NoAction, map: "bookmarks_ibfk_2")
+
+  @@unique([userId, imgId], map: "unique_user_img")
+  @@index([imgId], map: "imgId")
+}
+
+model comments {
+  commentId Int       @id @default(autoincrement())
+  userId    Int
+  imgId     Int
+  content   String?   @db.Text
+  deletedBy Int       @default(0)
+  deletedAt DateTime? @db.Timestamp(0)
+  isDeleted Boolean   @default(false)
+  createdAt DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt DateTime  @default(now()) @db.Timestamp(0)
+  users     users     @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "comments_ibfk_1")
+  images    images    @relation(fields: [imgId], references: [imgId], onDelete: NoAction, onUpdate: NoAction, map: "comments_ibfk_2")
+
+  @@index([imgId], map: "imgId")
+  @@index([userId], map: "userId")
+}
+
+model images {
+  imgId     Int         @id @default(autoincrement())
+  imgName   String?     @db.VarChar(255)
+  imgUrl    String      @db.VarChar(255)
+  imgDesc   String?     @db.Text
+  userId    Int
+  deletedBy Int         @default(0)
+  deletedAt DateTime?   @db.Timestamp(0)
+  isDeleted Boolean     @default(false)
+  createdAt DateTime    @default(now()) @db.Timestamp(0)
+  updatedAt DateTime    @default(now()) @db.Timestamp(0)
+  bookmarks bookmarks[]
+  comments  comments[]
+  users     users       @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "images_ibfk_1")
+  likes     likes[]
+
+  @@index([userId], map: "userId")
+}
+
+model likes {
+  likeId    Int       @id @default(autoincrement())
+  userId    Int
+  imgId     Int
+  deletedBy Int       @default(0)
+  deletedAt DateTime? @db.Timestamp(0)
+  isDeleted Boolean   @default(false)
+  createdAt DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt DateTime  @default(now()) @db.Timestamp(0)
+  users     users     @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "likes_ibfk_1")
+  images    images    @relation(fields: [imgId], references: [imgId], onDelete: NoAction, onUpdate: NoAction, map: "likes_ibfk_2")
+
+  @@unique([userId, imgId], map: "unique_user_img")
+  @@index([imgId], map: "imgId")
+}
+
+model users {
+  userId        Int            @id @default(autoincrement())
+  email         String         @unique(map: "email") @db.VarChar(255)
+  password      String?        @db.VarChar(255)
+  name          String?        @db.VarChar(255)
+  birthDate     DateTime?      @db.Date
+  avatar        String?        @db.VarChar(255)
+  googleId      String?        @db.VarChar(255)
+  sessionId     String?        @db.VarChar(255)
+  isVerifyEmail Boolean?       @default(false)
+  deletedBy     Int            @default(0)
+  deletedAt     DateTime?      @db.Timestamp(0)
+  isDeleted     Boolean        @default(false)
+  createdAt     DateTime       @default(now()) @db.Timestamp(0)
+  updatedAt     DateTime       @default(now()) @db.Timestamp(0)
+  aboutMe       String?        @db.VarChar(255)
+  bookmarks     bookmarks[]
+  comments      comments[]
+  images        images[]
+  likes         likes[]
+  verifiedEmail verifiedEmail?
+}
+
+model verifiedEmail {
+  id             Int       @id @default(autoincrement())
+  userId         Int       @unique(map: "userId")
+  verifyCode     String?   @db.VarChar(6)
+  codeExpiration DateTime? @db.Timestamp(0)
+  deletedAt      DateTime? @db.Timestamp(0)
+  isDeleted      Boolean   @default(false)
+  createdAt      DateTime  @default(now()) @db.Timestamp(0)
+  updatedAt      DateTime  @default(now()) @db.Timestamp(0)
+  users          users     @relation(fields: [userId], references: [userId], onDelete: NoAction, onUpdate: NoAction, map: "verifiedEmail_ibfk_1")
+}
