@@ -1,0 +1,904 @@
+{
+	"info": {
+		"_postman_id": "216eb881-6cb0-4662-8532-92e567366eba",
+		"name": "Capstone_Insta",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19043284",
+		"_collection_link": "https://www.postman.com/iptp-dev-api/workspace/node-53-community/collection/19043284-216eb881-6cb0-4662-8532-92e567366eba?action=share&source=collection_link&creator=19043284"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"bandoanhsang@gmail.com\", \n    \"password\": \"12345\", \n    \"name\": \"Lee Chio Kuo\",\n    \"birthDate\": \"1989-01-01\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/auth/register",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"accessToken\", pm.response.json().data.accessToken);",
+									"pm.environment.set(\"refreshToken\", pm.response.json().data.refreshToken);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"phamvand@gmail.com\", \n    \"password\": \"12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/auth/login",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "logout",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/auth/logout",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "refreshToken",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.environment.set(\"accessToken\", pm.response.json().data.accessToken);",
+									"pm.environment.set(\"refreshToken\", pm.response.json().data.refreshToken);"
+								],
+								"type": "text/javascript",
+								"packages": {},
+								"requests": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"accessToken\": \"{{accessToken}}\", \n    \"refreshToken\": \"{{refreshToken}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/auth/refreshToken",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"auth",
+								"refreshToken"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "verifyEmail",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 4, \n    \"verifyCode\": \"2f3079\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/auth/verifyOtp",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"auth",
+								"verifyOtp"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "re-generate OTP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"userId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/auth/genOtp",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"auth",
+								"genOtp"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "getUserInfo",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"bandoanhsang@gmail.com\", \n    \"password\": \"12345\"\n}"
+						},
+						"url": {
+							"raw": "{{local}}/user/personal",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"user",
+								"personal"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update user info",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "avatar",
+									"type": "file",
+									"src": "/Users/phuongle/Desktop/ai_edit.webp"
+								},
+								{
+									"key": "name",
+									"value": "Pham Văn Vẻ",
+									"type": "text"
+								},
+								{
+									"key": "aboutMe",
+									"value": "I'm a good good boy hehee",
+									"type": "text"
+								},
+								{
+									"key": "birthDate",
+									"value": "2006-03-22",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local}}/user/personal",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"user",
+								"personal"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "post",
+									"type": "file",
+									"src": "/Users/phuongle/Desktop/f3.png"
+								},
+								{
+									"key": "imgName",
+									"value": "Em va Trinh",
+									"type": "text"
+								},
+								{
+									"key": "imgDesc",
+									"value": "#YouAreNotAlone",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{local}}/posts",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findMany images",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{local}}/posts?page=1&limit=5",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								},
+								{
+									"key": "filters",
+									"value": "{\"imgInfo\":  \"\" , \"userId\": \"8\"}",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findOne image",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{local}}/posts/5",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"posts",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"imgName\": \"ahahaha hihihi\",\n    \"imgDesc\": \"This is a test image\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/posts/4",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"posts",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Remove",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/posts/1",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comments",
+			"item": [
+				{
+					"name": "findMany",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{local}}/post/2/comments?limit=3",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"post",
+								"2",
+								"comments"
+							],
+							"query": [
+								{
+									"key": "cursor",
+									"value": "2024-05-04 00:00:00",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "create",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Nghệ quá hen\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/post/2/comments",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"post",
+								"2",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Nghệ quá hen 222\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/post/2/comments/51",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"post",
+								"2",
+								"comments",
+								"51"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/post/2/comments/51",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"post",
+								"2",
+								"comments",
+								"51"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Likes",
+			"item": [
+				{
+					"name": "findMany",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{local}}/post/2/like?limit=5",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"post",
+								"2",
+								"like"
+							],
+							"query": [
+								{
+									"key": "cursor",
+									"value": "2024-05-04 00:00:00",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "toggle",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/post/1/like",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"post",
+								"1",
+								"like"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Bookmark",
+			"item": [
+				{
+					"name": "isBookmark",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{local}}/post/10/bookmark",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"post",
+								"10",
+								"bookmark"
+							],
+							"query": [
+								{
+									"key": "cursor",
+									"value": "2024-05-04 00:00:00",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "getBookmark by user",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{local}}/bookmarks",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"bookmarks"
+							],
+							"query": [
+								{
+									"key": "cursor",
+									"value": "2024-05-04 00:00:00",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "toggle",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{accessToken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"content\": \"Nghệ quá hen\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{local}}/post/1/bookmark",
+							"host": [
+								"{{local}}"
+							],
+							"path": [
+								"post",
+								"1",
+								"bookmark"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
